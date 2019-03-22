@@ -34,6 +34,14 @@ Last argument is the file with the polynomials
 
 Program will generate 2 file. A file with results, which is located in the folder "RESULTS" and gives the information about the assumptions. And a file with a heatmaps in the folder "RESULTS/HeatMaps". Note that these heatmaps are in .txt format for now.
 
-R - Generate the HeatMaps
+R - heat_map.R - Generate the HeatMaps
+You will need the R Studio. You can get it here: https://www.rstudio.com/
+Once you have the R Studio open, you can just run the entire script. 
+
+This will create an image.jpg for every .txt file inside the folder "RESULTS/HeatMaps".
+
+There are also bash scripts that you can use.
+
+The program is "as it is", no guarantee of any kind is given. Other then that you can freely use it, as long as it is not for commercial use.
 
 
