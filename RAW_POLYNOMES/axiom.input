@@ -1,0 +1,96 @@
+
+sampleSize:= 200000                        -- specify the sample size
+for d in [10, 20,40] repeat                -- specify the degrees
+	for b in [10] repeat        -- specify the bounds
+
+--------------------------------------------------------------
+--- don't touch beyond this line!
+--------------------------------------------------------------
+
+		--------------------------------------------------------------
+		--- parameters
+		--------------------------------------------------------------
+		degree:= d
+		bound:= b        -- bound is inclusive (|coefficients| <= bound)
+		outfilestr := concat("ax-", concat(degree :: String, concat("-", concat(bound :: String, concat("-", concat(sampleSize :: String, ".txt"))))))
+		outFILE : TextFile := open(outfilestr, "output")
+		--------------------------------------------------------------
+		--- local variables - don't touch this!
+		--------------------------------------------------------------
+		sqFree := 0 :: Integer
+		primitive := 0 :: Integer
+		setToPrimitive := 0 :: Integer
+		finalSize := 0 :: Integer
+		--------------------------------------------------------------
+		--- create a polynome
+		--------------------------------------------------------------
+		for jj in 1..sampleSize repeat
+			u := 0
+			coeff := [] :: List(Integer)
+			p := 0 :: Polynomial(Integer)
+			for i in 0..degree repeat
+				if i = 0 or i = degree then
+					c:= 1 + random(bound)
+					if i = 0 and random(2) = 0 then
+						c:= -c
+					p:= p + c * x^i
+				else
+					c:= random(2*bound+1) - bound
+					p:= p + c * x^i
+				coeff := append(coeff,[c])
+			--------------------------------------------------------------
+			--- check constrain - gcd of coefficients is 1, if not -> divide by gcd
+			--------------------------------------------------------------
+			result := coeff.1 :: Integer
+			for i in 2..(degree+1) repeat
+				if result = 1 then
+					break
+				else
+					if coeff.i > 0 or coeff.i < 0 then
+						result := gcd(result, coeff.i) :: Integer
+			if result = 1 then
+				primitive := primitive + 1
+			if result > 1 then
+				setToPrimitive := setToPrimitive + 1
+				p:= p/result
+				for kk in 0..degree repeat
+					coeff.(1+kk) := ((coeff.(1+kk))/result) :: Integer
+			--------------------------------------------------------------
+			--- choose to add this polynomial with a probability (1/(number of possible polynomials that are the same; 1/2 = 2/4)
+			--------------------------------------------------------------
+			-- calculate the total number of polynomials that map to this primitive polynomial after dividing p with gcd of it's coefficients	
+			--------------------------------------------------------------
+			max_coeff := 0
+			for i in 0..degree repeat
+				if abs(coeff.(i+1)) > max_coeff then
+					max_coeff := abs(coeff.(i+1))
+			num_potencial_poly := floor(bound/max_coeff) :: Integer
+			if random(num_potencial_poly) = 0 then --keep the polynome
+				u := 1
+			--------------------------------------------------------------
+			--- check constrain - no repeated roots
+			--------------------------------------------------------------
+			if gcd(p,D(p,x)) = 1 then
+				sqFree := sqFree + 1
+				if u = 1 then
+					finalSize := finalSize + 1
+					writeLine!(outFILE, coeff pretend String)
+
+
+		write!(outFILE, "number of Poly Tested:         ")
+		writeLine!(outFILE, sampleSize pretend String)
+
+		write!(outFILE, "number of Final Size:          ")
+		writeLine!(outFILE, finalSize pretend String)
+
+		write!(outFILE, "number of sqFree Poly:         ")
+		writeLine!(outFILE, sqFree pretend String)
+
+		write!(outFILE, "number of primitive Poly:      ")
+		writeLine!(outFILE, primitive pretend String)
+
+		write!(outFILE, "number of NONprimitive Poly:   ")
+		writeLine!(outFILE, setToPrimitive pretend String)
+
+)set quit unprotected
+)quit
