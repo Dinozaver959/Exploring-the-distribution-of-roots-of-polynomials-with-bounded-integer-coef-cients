@@ -1,4 +1,4 @@
-# Exploring-the-distribution-of-roots-of-polynomials-with-bounded-integer-coef-cients
+# Exploring-the-distribution-of-roots-of-polynomials-with-bounded-integer-coefficients
 
 I have undertaken this as my Honors Project in Computer Science and Mathematics. The detail about the work can be found in the .pdf file.
 
